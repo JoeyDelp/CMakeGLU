@@ -167,7 +167,8 @@ void Symbolic_Matrix::ABFTCheckResult() {
 }
 #endif
 
-vector<REAL> Symbolic_Matrix::solve(SNicsLU *nicslu, const vector<REAL> &rhs) {
+vector<REAL> Symbolic_Matrix::solve(SNicsLU *nicslu,
+                                    const vector<real__t> &rhs) {
   vector<REAL> b(n);
   vector<REAL> x(n);
   unsigned mc64_scale = nicslu->cfgi[1];
