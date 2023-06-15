@@ -16,6 +16,8 @@ project(GLU VERSION ${TODAY} LANGUAGES C CXX)
 
  string(TOLOWER ${PROJECT_NAME} lcname)
 
+ option(GLU_CLI "Compile CLI for testing" OFF)
+
 include(${PROJECT_SOURCE_DIR}/cmake/dependencies.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/make_static_target.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/warnings.cmake)
@@ -78,15 +80,17 @@ target_include_directories(${lcname} PUBLIC
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/include"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/")
 
-# GLU command line interface
-# --------------------------
-add_executable(${lcname}-CLI "src/preprocess.c" "main.cpp")
+if(GLU_CLI)
+    # GLU command line interface
+    # --------------------------
+    add_executable(${lcname}-CLI "src/preprocess.c" "main.cpp")
 
-# Dependencies
-target_link_libraries(${lcname}-CLI PRIVATE ${lcname})
-target_link_libraries(${lcname}-CLI PRIVATE nicslu)
+    # Dependencies
+    target_link_libraries(${lcname}-CLI PRIVATE ${lcname})
+    target_link_libraries(${lcname}-CLI PRIVATE nicslu)
 
-# Properties
-make_target_static(${lcname}-CLI)
-target_add_warnings(${lcname}-CLI)
-set_target_properties(${lcname}-CLI PROPERTIES OUTPUT_NAME "glu-cli")
+    # Properties
+    make_target_static(${lcname}-CLI)
+    target_add_warnings(${lcname}-CLI)
+    set_target_properties(${lcname}-CLI PROPERTIES OUTPUT_NAME "glu-cli")
+endif()
